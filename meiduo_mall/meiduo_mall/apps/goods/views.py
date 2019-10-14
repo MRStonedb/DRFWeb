@@ -4,6 +4,7 @@ from django.shortcuts import render
 
 from rest_framework.filters import OrderingFilter
 from rest_framework.generics import ListAPIView
+from drf_haystack.viewsets import HaystackViewSet
 
 from .serializers import SKUSerializer
 from .models import SKU
@@ -24,3 +25,12 @@ class SKUListView(ListAPIView):
         category_id = self.kwargs['category_id']
         # 筛选条件 ：category_id（在SKU模型中作为外键，所以有category_id字段），is_launched 是新上架
         return SKU.objects.filter(category_id=category_id, is_launched=True)
+
+
+class SKUSearchViewSet(HaystackViewSet):
+    """
+    SKU搜索
+    """
+    index_models = [SKU]
+
+    serializer_class = SKUIndexSerializer
