@@ -4,6 +4,7 @@ from drf_haystack.serializers import HaystackSerializer
 from .models import SKU
 from .search_indexes import SKUIndex
 
+
 class SKUSerializer(serializers.ModelSerializer):
     class Meta:
         model = SKU
