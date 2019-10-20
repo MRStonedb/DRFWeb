@@ -28,7 +28,7 @@ def generate_static_sku_detail_html(sku_id):
     categories = get_categories()
 
     # 获取当前sku的信息
-    sku = SKU.objects.get(id=sku_id)
+    sku = SKU.objects.get(id=sku_id)  # 华为手机对象
     sku.images = sku.skuimage_set.all()
 
     # 面包屑导航信息中的频道
@@ -38,7 +38,8 @@ def generate_static_sku_detail_html(sku_id):
     # 构建当前商品的规格键
     # sku_key = [规格1参数id， 规格2参数id， 规格3参数id, ...]
     sku_specs = sku.skuspecification_set.order_by('spec_id')
-    sku_key = []
+    # sku_specs = [{spec_id:6(颜色), option:13(金)}, {spec_id:7(版本), option:20()} ]
+    sku_key = []  # 目标数据 sku_key = [13, 20]
     for spec in sku_specs:
         sku_key.append(spec.option.id)
 

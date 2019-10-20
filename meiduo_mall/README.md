@@ -11,3 +11,9 @@
 #### celery task 启动
 - cd meiduo_mall (在celery_tasks 文件夹的同级目录)
 - celery -A celery_tasks.main worker -l info
+
+
+#### 启动docker相关容器
+- docker container start elasticsearch 
+- docker container start tracker
+- docker container start storage
