@@ -5,5 +5,5 @@ from . import views
 
 
 urlpatterns = [
-    url(r'^/carts/$', views.CartsView.as_view()),
+    url(r'^/cart/$', views.CartsView.as_view()),
 ]
