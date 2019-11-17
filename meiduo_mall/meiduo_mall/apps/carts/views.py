@@ -28,7 +28,7 @@ class CartsView(GenericAPIView):
         # sku_id  count  selected
         # 校验
         serializer = self.get_serializer(data=request.data)
-        serializer.is_valid(raise_excption=True)
+        serializer.is_valid(raise_exception=True)
 
         sku_id = serializer.validated_data['sku_id']
         count = serializer.validated_data['count']
