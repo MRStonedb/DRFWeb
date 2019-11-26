@@ -9,7 +9,7 @@ from .utils import OAuthQQ
 from .exceptions import QQAPIError
 from .models import OAuthQQUser
 from .serializers import OAuthQQUserSerializer
-
+from carts.utils import merge_cart_cookie_to_redis
 
 class QQAuthURLView(APIView):
 
@@ -65,29 +65,44 @@ class QQAuthUserView(GenericAPIView):
                 'user_id': user.id,
                 'username': user.username
             })
+            # 合并购物车
+            response = merge_cart_cookie_to_redis(request, user, response)
+
             return response
 
 
-    def post(self, request):
-        """
-        QQ扫描之后，如果没有openid,就post请求登陆
-        保存QQ登录用户数据
-        """
-        serializer = self.get_serializer(data=request.data)
-        serializer.is_valid(raise_exception=True)
-        user = serializer.save()
+    # def post(self, request):
+    #     """
+    #     QQ扫描之后，如果没有openid,就post请求登陆
+    #     保存QQ登录用户数据
+    #     """
+    #     serializer = self.get_serializer(data=request.data)
+    #     serializer.is_valid(raise_exception=True)
+    #     user = serializer.save()
 
-        # 生成已登录的token
-        jwt_payload_handler = api_settings.JWT_PAYLOAD_HANDLER
-        jwt_encode_handler = api_settings.JWT_ENCODE_HANDLER
+    #     # 生成已登录的token
+    #     jwt_payload_handler = api_settings.JWT_PAYLOAD_HANDLER
+    #     jwt_encode_handler = api_settings.JWT_ENCODE_HANDLER
 
-        payload = jwt_payload_handler(user)
-        token = jwt_encode_handler(payload)
+    #     payload = jwt_payload_handler(user)
+    #     token = jwt_encode_handler(payload)
 
-        response = Response({
-            'token': token,
-            'user_id': user.id,
-            'username': user.username
-        })
+    #     response = Response({
+    #         'token': token,
+    #         'user_id': user.id,
+    #         'username': user.username
+    #     })
+
+    #     # 合并购物车
+    #     response = merge_cart_cookie_to_redis(request, user, response)
+
+    #     return response
+
+    def post(self, request, *args, **kwargs):
+        response = super().post(request, *args, **kwargs)
+
+        # 合并购物车
+        user = self.user
+        response = merge_cart_cookie_to_redis(request, user, response)
 
         return response

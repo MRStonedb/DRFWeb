@@ -2,6 +2,7 @@
 # -*- encoding: utf-8 -*-
 from rest_framework import serializers
 from django_redis import get_redis_connection
+from rest_framework_jwt.settings import api_settings
 from users.models import User
 from .utils import OAuthQQ
 from .models import OAuthQQUser
@@ -44,18 +45,44 @@ class OAuthQQUserSerializer(serializers.Serializer):
             data['user'] = user
         return data
 
-    def create(self, validated_data):
-        user = validated_data.get('user')
-        if not user:
-            # 用户不存在，创建用户
-            user = User.objects.create_user(
-                username=validated_data['mobile'],
-                password=validated_data['password'],
-                mobile=validated_data['mobile'],
-            )
+    # def create(self, validated_data):
+    #     user = validated_data.get('user')
+    #     if not user:
+    #         # 用户不存在，创建用户
+    #         user = User.objects.create_user(
+    #             username=validated_data['mobile'],
+    #             password=validated_data['password'],
+    #             mobile=validated_data['mobile'],
+    #         )
 
-        OAuthQQUser.objects.create(
-            openid=validated_data['openid'],
-            user=user
-        )
+    #     OAuthQQUser.objects.create(
+    #         openid=validated_data['openid'],
+    #         user=user
+    #     )
+    #     return user
+
+    def create(self, validated_data):
+
+        openid = validated_data['openid']
+        user = validated_data.get('user')
+        mobile = validated_data['mobile']
+        password = validated_data['password']
+
+        # 判断用户是否存在
+        if not user:
+            user = User.objects.create_user(username=mobile, mobile=mobile, password=password)
+
+        OAuthQQUser.objects.create(user=user, openid=openid)
+
+        # 签发JWT token
+        jwt_payload_handler = api_settings.JWT_PAYLOAD_HANDLER
+        jwt_encode_handler = api_settings.JWT_ENCODE_HANDLER
+
+        payload = jwt_payload_handler(user)
+        token = jwt_encode_handler(payload)
+
+        user.token = token
+
+        self.context['view'].user = user
+
         return user
