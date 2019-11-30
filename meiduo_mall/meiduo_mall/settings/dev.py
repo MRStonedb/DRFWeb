@@ -54,6 +54,7 @@ INSTALLED_APPS = [
     'contents.apps.ContentsConfig',
     'goods.apps.GoodsConfig',
     'carts.apps.CartsConfig',
+    'orders.apps.OrdersConfig',
 ]
 
 MIDDLEWARE = [
@@ -94,7 +95,7 @@ WSGI_APPLICATION = 'meiduo_mall.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
-        'HOST': '192.168.42.132',  # 数据库主机
+        'HOST': '192.168.42.134',  # 数据库主机
         'PORT': 3306,  # 数据库端口
         'USER': 'meiduo',  # 数据库用户名
         'PASSWORD': 'meiduo',  # 数据库用户密码
@@ -106,7 +107,7 @@ DATABASES = {
 CACHES = {
     "default": {
         "BACKEND": "django_redis.cache.RedisCache",
-        "LOCATION": "redis://192.168.42.132:6379/0",
+        "LOCATION": "redis://192.168.42.134:6379/0",
         "OPTIONS": {
             "CLIENT_CLASS": "django_redis.client.DefaultClient",
         }
@@ -114,7 +115,7 @@ CACHES = {
     # session
     "session": {
         "BACKEND": "django_redis.cache.RedisCache",
-        "LOCATION": "redis://192.168.42.132:6379/1",
+        "LOCATION": "redis://192.168.42.134:6379/1",
         "OPTIONS": {
             "CLIENT_CLASS": "django_redis.client.DefaultClient",
         }
@@ -122,7 +123,7 @@ CACHES = {
     # 验证码
     "verify_codes": {
         "BACKEND": "django_redis.cache.RedisCache",
-        "LOCATION": "redis://192.168.42.132:6379/2",
+        "LOCATION": "redis://192.168.42.134:6379/2",
         "OPTIONS": {
             "CLIENT_CLASS": "django_redis.client.DefaultClient",
         }
@@ -130,7 +131,7 @@ CACHES = {
     # 浏览记录
     "history": {
         "BACKEND": "django_redis.cache.RedisCache",
-        "LOCATION": "redis://192.168.42.132:6379/3",
+        "LOCATION": "redis://192.168.42.134:6379/3",
         "OPTIONS": {
             "CLIENT_CLASS": "django_redis.client.DefaultClient",
         }
@@ -138,7 +139,7 @@ CACHES = {
     # 购物车
     "cart": {
         "BACKEND": "django_redis.cache.RedisCache",
-        "LOCATION": "redis://192.168.42.132:6379/4",
+        "LOCATION": "redis://192.168.42.134:6379/4",
         "OPTIONS": {
             "CLIENT_CLASS": "django_redis.client.DefaultClient",
         }
