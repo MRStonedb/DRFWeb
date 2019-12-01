@@ -101,6 +101,15 @@ DATABASES = {
         'USER': 'meiduo',  # 数据库用户名
         'PASSWORD': 'meiduo',  # 数据库用户密码
         'NAME': 'meiduo_mall'  # 数据库名字
+    },
+    # mysql slave
+    'slave': {
+        'ENGINE': 'django.db.backends.mysql',
+        'HOST': '192.168.42.134',  # 数据库主机
+        'PORT': 8306,  # 数据库端口
+        'USER': 'root',  # 数据库用户名
+        'PASSWORD': 'mysql',  # 数据库用户密码
+        'NAME': 'meiduo_mall'  # 数据库名字
     }
 }
 
@@ -341,3 +350,5 @@ ALIPAY_APPID = '2016081600258081'
 ALIPAY_DEBUG = True
 ALIPAY_URL = 'https://openapi.alipaydev.com/gateway.do'
 
+# 配置读写分离
+DATABASE_ROUTERS = ['meiduo_mall.utils.db_router.MasterSlaveDBRouter']
