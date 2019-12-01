@@ -17,3 +17,5 @@
 - docker container start elasticsearch 
 - docker container start tracker
 - docker container start storage
+
+#### django collectstatic
