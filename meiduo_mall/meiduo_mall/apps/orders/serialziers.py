@@ -122,6 +122,7 @@ class SaveOrderSerializer(serializers.ModelSerializer):
                             transaction.savepoint_rollback(save_id)
                             raise serializers.ValidationError('商品%s库存不足' % sku.name)
 
+                        # 演示并发下单
                         import time
                         time.sleep(5)
 
